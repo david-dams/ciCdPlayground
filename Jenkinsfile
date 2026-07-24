@@ -27,9 +27,13 @@ pipeline {
 
         stage('test:e2e') {
             steps {
-		sh 'yarn test:e2e'
-
+		sh 'yarn test:e2e'		
             }
+	    post {
+		always {
+		    junit '**/reports/**/*.xml'
+		}
+	    }	    
         }
 	
 
@@ -58,11 +62,6 @@ pipeline {
                     userMetadata: []
             }
         }
-    }
-    post {
-	always {
-	    junit '**/reports/**/*.xml'
-	}
     }
 
 }
