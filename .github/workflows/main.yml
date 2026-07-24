@@ -35,3 +35,6 @@ jobs:
       if: success() || failure() # always run even if the previous step fails
       with:
         report_paths: '**/reports/**/*.xml'
+    - uses: christophebedard/tag-version-commit@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
