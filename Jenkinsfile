@@ -17,7 +17,13 @@ pipeline {
 
             }
         }
-
+	
+	post {
+	    always {
+		junit '**/reports/junit/*.xml'
+	    }
+	}
+	
         stage('build') {
             steps {
                 sh 'yarn build'
