@@ -18,11 +18,6 @@ pipeline {
             }
         }
 	
-	post {
-	    always {
-		junit '**/reports/junit/*.xml'
-	    }
-	}
 	
         stage('build') {
             steps {
@@ -41,27 +36,33 @@ pipeline {
         stage('deploy') {
             steps {
                 s3Upload consoleLogLevel: 'INFO', 
-                  dontSetBuildResultOnFailure: false, 
-                  dontWaitForConcurrentBuildCompletion: false, 
-                  entries: [[
-                      bucket: "cicd-workshop-playground/${env.GIT_URL.split('/')[3]}", 
-                      excludedFile: '', 
-                      flatten: false, 
-                      gzipFiles: false, 
-                      keepForever: false, 
-                      managedArtifacts: false, 
-                      noUploadOnFailure: false, 
-                      selectedRegion: 'eu-central-1', 
-                      showDirectlyInBrowser: false, 
-                      sourceFile: 'public/**/*.*', 
-                      storageClass: 'STANDARD', 
-                      uploadFromSlave: false, 
-                      useServerSideEncryption: false
-                    ]], 
+                    dontSetBuildResultOnFailure: false, 
+                    dontWaitForConcurrentBuildCompletion: false, 
+                    entries: [[
+                    bucket: "cicd-workshop-playground/${env.GIT_URL.split('/')[3]}", 
+                    excludedFile: '', 
+                    flatten: false, 
+                    gzipFiles: false, 
+                    keepForever: false, 
+                    managedArtifacts: false, 
+                    noUploadOnFailure: false, 
+                    selectedRegion: 'eu-central-1', 
+                    showDirectlyInBrowser: false, 
+                    sourceFile: 'public/**/*.*', 
+                    storageClass: 'STANDARD', 
+                    uploadFromSlave: false, 
+                    useServerSideEncryption: false
+                ]], 
                     pluginFailureResultConstraint: 'FAILURE', 
                     profileName: 'role-based-access', 
                     userMetadata: []
             }
         }
     }
+    post {
+	always {
+	    junit '**/reports/junit/*.xml'
+	}
+    }
+
 }
